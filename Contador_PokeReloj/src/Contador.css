@@ -25,9 +25,10 @@ body {
 }
 
 .lista-contenedor {
+  position: relative;
   background: #282726;
   padding: 15px;
-  border-radius: 16px;
+  border-radius: none;
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
@@ -40,8 +41,9 @@ body {
   height: 250px;
   width: 270px;
   padding: 10px;
-  border-radius: 8px;
+  border-radius: none;
   margin-bottom: 20px;
+  z-index: 10;
 }
 
 .numero {
@@ -145,3 +147,23 @@ body {
   justify-content: space-between;
   align-items: center;
 }
+
+.btn-rs{
+position: absolute;
+  left: 60%;
+  top: 63.33%;
+  transform: translateY(-50%) rotate(90deg); /* Lo centra y rota */
+  background-color: #282726;
+  cursor: pointer;
+  border: none;
+  z-index: 50;
+  outline: none;
+}
+
+ 
+.btn-rs:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
+}
+

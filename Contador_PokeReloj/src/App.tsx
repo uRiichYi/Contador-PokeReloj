@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import './Contador.css'; // Asegúrate de importar el archivo CSS
+import './Contador.css';
 
 import fondoCuadro from './assets/Boton.svg';
 import fondoCuadroAnimation from './assets/Boton animacion.svg';
 import Pantalla from './assets/Pantalla.svg';
 import Minus from './assets/Decremento.svg';
 import Plus from './assets/Incremento.svg';
+import resetbtn from './assets/Reset.svg'
+import resetAnim from './assets/ResetAnim.svg'
 
 interface Registro {
   id: number;
@@ -20,6 +22,7 @@ const Contador = () => {
   
   const [animBtnMas, setAnimBtnMas] = useState(false);
   const [animBtnMenos, setAnimBtnMenos] = useState(false);
+  const [AnimBtnReset, setAnimBtnReset] = useState(false);
 
   const [historial, setHistorial] = useState<Registro[]>(() => {
     const guardado = localStorage.getItem('historialContador');
@@ -40,6 +43,12 @@ const Contador = () => {
     setContar(Math.max(0, contar - 1));
     setAnimBtnMenos(true);
     setTimeout(() => setAnimBtnMenos(false), 200);
+  };
+
+  const reset = () => {
+    setContar(0)
+    setAnimBtnReset(true);
+    setTimeout(()=> setAnimBtnReset(false), 200)
   };
 
   const agregarRegistro = () => {
@@ -110,6 +119,15 @@ const Contador = () => {
               style={{ width: '100%', height: '100%' }} 
             />
             <img src={Plus} alt="Más" className="icono" />
+          </button>
+                    <button onClick={reset}
+          className='btn-rs'
+          >
+            <img
+            src={AnimBtnReset ? resetAnim : resetbtn }
+            alt='Reset'
+            className=' icono-reset'
+            />
           </button>
         </div>
       </div>
