@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import './Contador.css';
 
+import NavBar from './components/Navbar';
+
 import fondoCuadro from './assets/Boton.svg';
 import fondoCuadroAnimation from './assets/Boton animacion.svg';
 import Pantalla from './assets/Pantalla.svg';
@@ -8,6 +10,8 @@ import Minus from './assets/Decremento.svg';
 import Plus from './assets/Incremento.svg';
 import resetbtn from './assets/Reset.svg'
 import resetAnim from './assets/ResetAnim.svg'
+
+
 
 interface Registro {
   id: number;
@@ -70,7 +74,9 @@ const Contador = () => {
 
   return (
     <div className="contenedor">
-
+      <div className='navBar'>
+      <NavBar />
+      </div>
       <div className="guardado">
         <input 
           type="text" 
@@ -128,6 +134,8 @@ const Contador = () => {
             alt='Reset'
             className=' icono-reset'
             />
+            <>
+          </>
           </button>
         </div>
       </div>
