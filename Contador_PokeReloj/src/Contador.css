@@ -149,6 +149,17 @@ body {
   align-items: center;
 }
 
+.btn-sh{
+  position: absolute;
+  left: 89%;
+  top: -3%;
+  background-color: #282726;
+  cursor: pointer;
+  border: none;
+  z-index: 50;
+  outline: none;
+}
+
 .btn-rs{
 position: absolute;
   left: 60%;

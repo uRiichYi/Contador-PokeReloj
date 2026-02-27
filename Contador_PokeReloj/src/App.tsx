@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { usePokemon } from './components/Apis/PokemonCalls';
 import './Contador.css';
 
 import NavBar from './components/Navbar';
@@ -10,32 +11,24 @@ import Minus from './assets/Decremento.svg';
 import Plus from './assets/Incremento.svg';
 import resetbtn from './assets/Reset.svg'
 import resetAnim from './assets/ResetAnim.svg'
+import ShinyBtn from './assets/Shiny.svg'
+import ShinyBtnAnim from './assets/ShinyAnim.svg'
 
-
-
-interface Registro {
-  id: number;
-  nombre: string;
-  valor: number;
-  hora: string;
-}
 
 const Contador = () => {
   const [contar, setContar] = useState<number>(0);
-  const [nombre, setNombre] = useState<string>('');
+
+  const {listaPokemon, cargando} = usePokemon(); 
   
   const [animBtnMas, setAnimBtnMas] = useState(false);
   const [animBtnMenos, setAnimBtnMenos] = useState(false);
   const [AnimBtnReset, setAnimBtnReset] = useState(false);
 
-  const [historial, setHistorial] = useState<Registro[]>(() => {
-    const guardado = localStorage.getItem('historialContador');
-    return guardado ? JSON.parse(guardado) : [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem('historialContador', JSON.stringify(historial));
-  }, [historial]);
+  const [searchValue, setSearchValue] = useState('');
+  const PokemonFilter = listaPokemon.filter(pokemon =>
+    pokemon.name.toLowerCase().includes(searchValue.toLowerCase())
+  );
+  const [AnimBtnShiny, setAnimBtnShiny] = useState(false);
 
   const incrementar = () => {
     setContar(contar + 1);
@@ -45,7 +38,7 @@ const Contador = () => {
 
   const decrementar = () => {
     setContar(Math.max(0, contar - 1));
-    setAnimBtnMenos(true);
+    setAnimBtnMenos(true);  
     setTimeout(() => setAnimBtnMenos(false), 200);
   };
 
@@ -55,21 +48,19 @@ const Contador = () => {
     setTimeout(()=> setAnimBtnReset(false), 200)
   };
 
-  const agregarRegistro = () => {
-    if (nombre.trim() === '') return;
-    const nuevoRegistro: Registro = {
-      id: Date.now(),
-      nombre: nombre,
-      valor: contar,
-      hora: new Date().toLocaleTimeString(),
-    };
-    setHistorial([nuevoRegistro, ...historial]);
-    setNombre('');
-    setContar(0);
-  }
+  /*const filteredPokemon = pokemon.filter(pokemons =>
+    pokemons.nombre.toLowerCase().includes(searchValue.toLowerCase)
+  )*/
+  /*const search = () =>{
+    filteredPokemon.map(item=>(
+      <div key={item.id}>{pokemon.nombre}</div>
+    ))
+  }*/
 
-  const handleNombreChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setNombre(e.target.value);
+  const shiny = () =>{
+    setAnimBtnShiny(true);
+    setContar(0);
+    setTimeout(()=> setAnimBtnShiny(false),200)
   }
 
   return (
@@ -77,17 +68,19 @@ const Contador = () => {
       <div className='navBar'>
       <NavBar />
       </div>
-      <div className="guardado">
-        <input 
-          type="text" 
-          placeholder='Nombre...' 
-          value={nombre} 
-          onChange={handleNombreChange} 
-          className="input" 
-        />
-        <button onClick={agregarRegistro} className="btn-guardar"> 
-          Guardar 
-        </button>
+
+      <div className='Search'>
+        <input type="text" value={searchValue} onChange={(e)=>setSearchValue(e.target.value)} placeholder={cargando ? 'Cargando Pokédex...' : 'Buscar Pokémon...'}/>
+      
+      {searchValue.length > 1&&(
+        <ul className='resultados-busqueda'>
+          {PokemonFilter.slice(0,5).map(poke=>(
+            <li key={poke.name} onClick={()=> setSearchValue(poke.name)}>
+              {poke.name}
+            </li>
+          ))}
+        </ul>
+      )}
       </div>
 
       <div className="lista-contenedor">
@@ -126,7 +119,16 @@ const Contador = () => {
             />
             <img src={Plus} alt="Más" className="icono" />
           </button>
-                    <button onClick={reset}
+
+          <button onClick={shiny}
+            className='btn-sh'
+            >
+            <img 
+            src={AnimBtnShiny ? ShinyBtnAnim : ShinyBtn} 
+            alt="" />
+          </button>
+
+          <button onClick={reset}
           className='btn-rs'
           >
             <img
