@@ -151,13 +151,22 @@ body {
 
 .btn-sh{
   position: absolute;
-  left: 89%;
-  top: -3%;
+  left: 92%;
+  top: 0%;
   background-color: #282726;
   cursor: pointer;
   border: none;
   z-index: 50;
   outline: none;
+  height: 200px;
+  padding-bottom: 70px;
+  width: 139px;
+}
+
+.btn-sh:focus {
+  outline: none !important;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-focus-ring-color: transparent;
 }
 
 .btn-rs{

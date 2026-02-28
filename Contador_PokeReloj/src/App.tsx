@@ -25,9 +25,16 @@ const Contador = () => {
   const [AnimBtnReset, setAnimBtnReset] = useState(false);
 
   const [searchValue, setSearchValue] = useState('');
-  const PokemonFilter = listaPokemon.filter(pokemon =>
-    pokemon.name.toLowerCase().includes(searchValue.toLowerCase())
-  );
+  const PokemonFilter = listaPokemon
+    .filter(pokemon =>
+      !pokemon.name.includes("-mega") &&
+      !pokemon.name.includes("-gmax") &&
+      !pokemon.name.includes("-starter") &&
+      !pokemon.name.includes("-totem")
+    )
+    .filter(pokemon=>
+      pokemon.name.toLowerCase().includes(searchValue.toLowerCase())
+    )
   const [AnimBtnShiny, setAnimBtnShiny] = useState(false);
 
   const incrementar = () => {
@@ -48,15 +55,6 @@ const Contador = () => {
     setTimeout(()=> setAnimBtnReset(false), 200)
   };
 
-  /*const filteredPokemon = pokemon.filter(pokemons =>
-    pokemons.nombre.toLowerCase().includes(searchValue.toLowerCase)
-  )*/
-  /*const search = () =>{
-    filteredPokemon.map(item=>(
-      <div key={item.id}>{pokemon.nombre}</div>
-    ))
-  }*/
-
   const shiny = () =>{
     setAnimBtnShiny(true);
     setContar(0);
@@ -74,11 +72,16 @@ const Contador = () => {
       
       {searchValue.length > 1&&(
         <ul className='resultados-busqueda'>
-          {PokemonFilter.slice(0,5).map(poke=>(
-            <li key={poke.name} onClick={()=> setSearchValue(poke.name)}>
-              {poke.name}
-            </li>
-          ))}
+          {PokemonFilter.slice(0,5).map(poke=>{
+            const id = poke.url.split("/")[6];
+            const sprite = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`
+            return(
+              <li key={poke.name} onClick={()=> setSearchValue(poke.name)}>
+                <img src={sprite} width={80} />
+                {poke.name}
+              </li>
+            )
+          })}
         </ul>
       )}
       </div>
